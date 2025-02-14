@@ -1,14 +1,45 @@
-import { FC, useMemo } from 'react';
-import { TConstructorIngredient } from '@utils-types';
-import { BurgerConstructorUI } from '@ui';
+import { FC, useEffect, useLayoutEffect, useMemo } from 'react';
+import { TConstructorIngredient, TypeIngredient } from '@utils-types';
+import { BurgerConstructorUI, Preloader } from '@ui';
+import { useAppDispatch, useAppSelector } from '../../services/store';
+import {
+  getConstructorItems,
+  getIngredients,
+  setConstructorItemsBun,
+  TConstructorItems
+} from '../../services/burgerConstructorSlice';
 
 export const BurgerConstructor: FC = () => {
   /** TODO: взять переменные constructorItems, orderRequest и orderModalData из стора */
-  const constructorItems = {
+  const initialConstructorItems = useAppSelector(getConstructorItems);
+  const ingredients = useAppSelector(getIngredients);
+  const dispatch = useAppDispatch();
+
+  useEffect(() => {
+    const bunInitial = ingredients.find((e) => e.type === TypeIngredient.BUN);
+    if (bunInitial) {
+      const bunPrice = bunInitial.price;
+      const bunName = bunInitial.name;
+      const bunImage = bunInitial.image;
+      const bunId = bunInitial._id;
+      const newInitialConstructorItems: Pick<
+        TConstructorItems,
+        TypeIngredient.BUN
+      > = {
+        bun: { price: bunPrice, name: bunName, image: bunImage, _id: bunId }
+      };
+      dispatch(setConstructorItemsBun(newInitialConstructorItems));
+    }
+  }, [ingredients]);
+
+  const constructorItems: TConstructorItems = {
     bun: {
-      price: 0
+      price: initialConstructorItems.bun.price,
+      name: initialConstructorItems.bun.name,
+      image: initialConstructorItems.bun.image,
+      _id: initialConstructorItems.bun._id
     },
-    ingredients: []
+    ingredients: initialConstructorItems.ingredients
   };
 
   const orderRequest = false;
@@ -16,7 +47,9 @@ export const BurgerConstructor: FC = () => {
   const orderModalData = null;
 
   const onOrderClick = () => {
-    if (!constructorItems.bun || orderRequest) return;
+    if (!constructorItems.bun || orderRequest) {
+      return;
+    }
   };
   const closeOrderModal = () => {};
 
@@ -29,8 +62,6 @@ export const BurgerConstructor: FC = () => {
       ),
     [constructorItems]
   );
-
-  return null;
 
   return (
     <BurgerConstructorUI
