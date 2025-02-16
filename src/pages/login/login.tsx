@@ -1,19 +1,16 @@
-import { FC, SyntheticEvent, useEffect, useState } from 'react';
+import { FC, SyntheticEvent, useState } from 'react';
 import { LoginUI } from '@ui-pages';
 import { useAppDispatch, useAppSelector } from '../../services/store';
 import {
   fetchLoginUserApi,
   getStateErrorMessageRegister,
-  getStateIsLoading,
-  getStateIsUserLogined
+  getStateIsLoading
 } from '../../services/userSlice';
-import { Navigate } from 'react-router-dom';
 import { Preloader } from '@ui';
 
 export const Login: FC = () => {
   const dispatch = useAppDispatch();
   const errorMessage = useAppSelector(getStateErrorMessageRegister);
-  const stateIsUserLogined = useAppSelector(getStateIsUserLogined);
   const isLoading = useAppSelector(getStateIsLoading);
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
@@ -30,8 +27,6 @@ export const Login: FC = () => {
 
   return isLoading ? (
     <Preloader />
-  ) : stateIsUserLogined ? (
-    <Navigate to={'/'} replace />
   ) : (
     <LoginUI
       errorText={errorMessage}

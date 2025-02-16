@@ -1,20 +1,34 @@
-import { FC, useMemo } from 'react';
+import { FC, useEffect, useMemo } from 'react';
 import { Preloader } from '../ui/preloader';
 import { OrderInfoUI } from '../ui/order-info';
 import { TIngredient, TOrder } from '@utils-types';
-import { useAppSelector } from '../../services/store';
+import { useAppDispatch, useAppSelector } from '../../services/store';
 import { getIngredients } from '../../services/burgerConstructorSlice';
 import { useParams } from 'react-router-dom';
-import { getStateOrders } from '../../services/feedSlice';
+import {
+  fetchOrderByNumber,
+  getStateOrderByNumer,
+  getStateOrders
+} from '../../services/feedSlice';
 
 export const OrderInfo: FC = () => {
   /** TODO: взять переменные orderData и ingredients из стора */
   const param = useParams();
+  const dispatch = useAppDispatch();
   const stateIngredients = useAppSelector(getIngredients);
-  const stateOrdersData = useAppSelector(getStateOrders);
-  const orderData = stateOrdersData.find(
-    (e) => e.number === Number(param.number)
-  );
+  // const stateOrdersData = useAppSelector(getStateOrders);
+  const orderData = useAppSelector(getStateOrderByNumer);
+
+  useEffect(() => {
+    if (param.number) {
+      dispatch(fetchOrderByNumber(Number(param.number)));
+    }
+  }, []);
+
+  // const orderData = stateOrdersData.find(
+  //   (e) => e.number === Number(param.number)
+  // );
+  // console.log(orderData);
 
   const ingredients: TIngredient[] = stateIngredients;
 
