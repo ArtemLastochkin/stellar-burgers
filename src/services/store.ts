@@ -2,10 +2,8 @@ import { combineSlices, configureStore } from '@reduxjs/toolkit';
 
 import {
   TypedUseSelectorHook,
-  // useDispatch as dispatchHook,
-  // useSelector as selectorHook
-  useDispatch,
-  useSelector
+  useDispatch as dispatchHook,
+  useSelector as selectorHook
 } from 'react-redux';
 import { burgerConstructorSlice } from './burgerConstructorSlice';
 import { feedSlice } from './feedSlice';
@@ -18,16 +16,11 @@ const store = configureStore({
   devTools: process.env.NODE_ENV !== 'production'
 });
 
-export type RootState = ReturnType<typeof store.getState>;
-
-// export type RootState = ReturnType<typeof rootReducer>;
+export type RootState = ReturnType<typeof rootReducer>;
 
 export type AppDispatch = typeof store.dispatch;
 
-// export const useDispatch: () => AppDispatch = () => dispatchHook();
-// export const useSelector: TypedUseSelectorHook<RootState> = selectorHook;
-
-export const useAppDispatch = useDispatch.withTypes<AppDispatch>();
-export const useAppSelector = useSelector.withTypes<RootState>();
+export const useAppDispatch: () => AppDispatch = () => dispatchHook();
+export const useAppSelector: TypedUseSelectorHook<RootState> = selectorHook;
 
 export default store;

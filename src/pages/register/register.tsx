@@ -5,7 +5,6 @@ import {
   fetchRegisterUserApi,
   getStateErrorMessageRegister
 } from '../../services/userSlice';
-import { TRegisterData } from '@api';
 
 export const Register: FC = () => {
   const dispatch = useAppDispatch();

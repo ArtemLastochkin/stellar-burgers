@@ -1,44 +1,35 @@
 import React from 'react';
 import { useAppSelector } from '../../services/store';
 import {
-  getStateEmail,
-  getStateIsUserLogined,
-  getStateName
+  getStateIsLoading,
+  getStateIsUserLogined
 } from '../../services/userSlice';
-import { Navigate, useNavigate } from 'react-router-dom';
+import { Navigate } from 'react-router-dom';
 import { Preloader } from '@ui';
 
 type ProtectedRouteProps = {
   children: React.ReactElement;
-  changeProfile?: boolean;
+  onlyAuthUser?: boolean;
 };
 
 export const ProtectedRoute = ({
   children,
-  changeProfile
+  onlyAuthUser
 }: ProtectedRouteProps) => {
+  const isLoadingUser = useAppSelector(getStateIsLoading);
   const stateIsUserLogined = useAppSelector(getStateIsUserLogined);
 
-  const navigate = useNavigate();
-  // const stateName = useAppSelector(getStateName);
-  // const stateEmail = useAppSelector(getStateEmail);
-
-  // if (isLoadingUser) {
-  //   return <Preloader/>
-  // }
-  if (changeProfile && stateIsUserLogined) {
-    return children;
+  if (isLoadingUser) {
+    return <Preloader />;
   }
 
-  if (stateIsUserLogined) {
-    return <Navigate to={'/'} />;
-  } else {
-    return children;
+  if (stateIsUserLogined && !onlyAuthUser) {
+    return <Navigate replace to={'/'} />;
   }
 
-  // if (stateName || stateEmail) {
-  //   return <Navigate replace to='/' />;
-  // }
+  if (!stateIsUserLogined && onlyAuthUser) {
+    return <Navigate replace to={'/'} />;
+  }
 
-  return <Preloader />;
+  return children;
 };

@@ -1,17 +1,10 @@
 import { getIngredientsApi } from '@api';
-import {
-  createAsyncThunk,
-  createSlice,
-  PayloadAction,
-  Selector
-} from '@reduxjs/toolkit';
-import { RootState } from './store';
+import { createAsyncThunk, createSlice, PayloadAction } from '@reduxjs/toolkit';
 import {
   TConstructorIngredient,
   TIngredient,
   TypeIngredient
 } from '@utils-types';
-// import { getCookie, setCookie } from '../utils/cookie';
 
 export type TConstructorItems = {
   bun: {

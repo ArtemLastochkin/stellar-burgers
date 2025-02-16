@@ -13,35 +13,39 @@ import '../../index.css';
 import styles from './app.module.css';
 import styleOrderDetails from '../ui/order-info/order-info.module.css';
 import sryleIngridientDetails from '../ui/ingredient-details/ingredient-details.module.css';
-import {
-  Routes,
-  Route,
-  useNavigate,
-  useLocation,
-  useParams
-} from 'react-router-dom';
+import { Routes, Route, useNavigate, useLocation } from 'react-router-dom';
 
 import { AppHeader, IngredientDetails, Modal, OrderInfo } from '@components';
 import { ProtectedRoute } from '../protected-route';
 
 import { fetchIngredients } from '../../services/burgerConstructorSlice';
-import { useAppDispatch } from '../../services/store';
-import { fetchFeeds, fetchOrders } from '../../services/feedSlice';
-import { fetchCheckUserLogined } from '../../services/userSlice';
+import { useAppDispatch, useAppSelector } from '../../services/store';
+import {
+  fetchCheckUserLogined,
+  getStateIsLoading
+} from '../../services/userSlice';
 import { useEffect } from 'react';
+import { Preloader } from '@ui';
 
 const App = () => {
   const navigate = useNavigate();
   const dispatch = useAppDispatch();
   const location = useLocation();
   const background = location.state?.background;
+  const isLoading = useAppSelector(getStateIsLoading);
 
   useEffect(() => {
     dispatch(fetchIngredients());
-    // dispatch(fetchFeeds());
     dispatch(fetchCheckUserLogined());
-    // dispatch(fetchOrders());
   }, []);
+
+  if (isLoading) {
+    return (
+      <div className={styles.app}>
+        <Preloader />
+      </div>
+    );
+  }
 
   return (
     <div className={styles.app}>
@@ -88,7 +92,7 @@ const App = () => {
         <Route
           path='/profile'
           element={
-            <ProtectedRoute changeProfile>
+            <ProtectedRoute onlyAuthUser>
               <Profile />
             </ProtectedRoute>
           }
@@ -97,7 +101,7 @@ const App = () => {
         <Route
           path='/profile/orders'
           element={
-            <ProtectedRoute changeProfile>
+            <ProtectedRoute onlyAuthUser>
               <ProfileOrders />
             </ProtectedRoute>
           }

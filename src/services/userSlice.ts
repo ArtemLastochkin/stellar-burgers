@@ -1,5 +1,4 @@
 import {
-  getFeedsApi,
   getUserApi,
   loginUserApi,
   logoutApi,
@@ -9,8 +8,8 @@ import {
   updateUserApi
 } from '@api';
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
-import { TOrdersData, TUser } from '@utils-types';
-import { getCookie, setCookie } from '../utils/cookie';
+import { TUser } from '@utils-types';
+import { setCookie } from '../utils/cookie';
 
 const initialState: TUser & {
   errorMessage: string;
@@ -21,7 +20,7 @@ const initialState: TUser & {
   name: '',
   errorMessage: '',
   isUserLogined: false,
-  isLoading: false
+  isLoading: true
 };
 
 export const fetchRegisterUserApi = createAsyncThunk(
@@ -67,9 +66,7 @@ export const fetchlogoutApi = createAsyncThunk(
 export const userSlice = createSlice({
   name: 'userSlice',
   initialState,
-  reducers: {
-    // setConstructorItemsBun: (state, action) => {}
-  },
+  reducers: {},
   selectors: {
     getStateErrorMessageRegister: (state) => state.errorMessage,
     getStateIsUserLogined: (state) => state.isUserLogined,
@@ -98,7 +95,6 @@ export const userSlice = createSlice({
         state.isUserLogined = false;
       })
 
-      //
       .addCase(fetchLoginUserApi.pending, (state) => {
         state.isLoading = true;
         state.isUserLogined = false;
@@ -117,8 +113,7 @@ export const userSlice = createSlice({
         state.isUserLogined = false;
         state.isLoading = false;
       })
-      //
-      //
+
       .addCase(fetchCheckUserLogined.pending, (state) => {
         state.isLoading = true;
         state.isUserLogined = false;
@@ -133,8 +128,7 @@ export const userSlice = createSlice({
         state.isLoading = false;
         state.isUserLogined = false;
       })
-      //
-      //
+
       .addCase(fetchUpdateUserApi.pending, (state) => {
         state.isLoading = true;
       })
@@ -146,17 +140,22 @@ export const userSlice = createSlice({
       .addCase(fetchUpdateUserApi.rejected, (state) => {
         state.isLoading = false;
       })
-      //
-      //
+
       .addCase(fetchlogoutApi.pending, (state) => {
         state.isLoading = true;
+        state.isUserLogined = true;
       })
       .addCase(fetchlogoutApi.fulfilled, (state, action) => {
         state.isLoading = false;
-        console.log(action.payload);
+        state.isUserLogined = !action.payload.success;
+        state.email = '';
+        state.name = '';
+        setCookie('accessToken', '');
+        localStorage.removeItem('refreshToken');
       })
       .addCase(fetchlogoutApi.rejected, (state) => {
         state.isLoading = false;
+        state.isUserLogined = true;
       });
   }
 });
@@ -169,6 +168,4 @@ export const {
   getStateEmail
 } = userSlice.selectors;
 
-// export const { setConstructorItemsBun, setConstructorItemsIngredients } =
-//   burgerConstructorSlice.actions;
 export default userSlice.reducer;

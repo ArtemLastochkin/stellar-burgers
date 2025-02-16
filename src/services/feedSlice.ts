@@ -6,13 +6,13 @@ import {
 } from '@api';
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 import { TOrder, TOrdersData } from '@utils-types';
-import { stat } from 'fs';
 
 const initialState: TOrdersData & {
   isLoadingOrder: boolean;
   userOrders: TOrder[];
   orderModalData: TOrder | null;
   orderByNumer: TOrder | null;
+  isLoadingFeeds: boolean;
 } = {
   orders: [],
   orderByNumer: null,
@@ -20,7 +20,8 @@ const initialState: TOrdersData & {
   userOrders: [],
   total: 0,
   totalToday: 0,
-  isLoadingOrder: false
+  isLoadingOrder: false,
+  isLoadingFeeds: false
 };
 
 export const fetchFeeds = createAsyncThunk('feedSlice/fetchFeeds', async () => {
@@ -70,25 +71,24 @@ export const feedSlice = createSlice({
     getStateUserOrders: (state) => state.userOrders,
     getStateisLoadingOrder: (state) => state.isLoadingOrder,
     getStateOrderModalData: (state) => state.orderModalData,
-    getStateOrderByNumer: (state) => state.orderByNumer
+    getStateOrderByNumer: (state) => state.orderByNumer,
+    getStateIsLoadingFeeds: (state) => state.isLoadingFeeds
   },
   extraReducers: (builder) => {
     builder
       .addCase(fetchFeeds.pending, (state) => {
-        // state.isLoadingOrder = true;
-        // state.errorMessage = null;
+        state.isLoadingFeeds = true;
       })
       .addCase(fetchFeeds.fulfilled, (state, action) => {
-        // state.isLoadingOrder = false;
+        state.isLoadingFeeds = false;
         state.orders = action.payload.orders;
         state.total = action.payload.total;
         state.totalToday = action.payload.totalToday;
       })
-      .addCase(fetchFeeds.rejected, (state, action) => {
-        // state.isLoadingOrder = false;
+      .addCase(fetchFeeds.rejected, (state) => {
+        state.isLoadingFeeds = false;
       })
-      //
-      //
+
       .addCase(fetchOrderBurger.pending, (state) => {
         state.isLoadingOrder = true;
       })
@@ -96,31 +96,29 @@ export const feedSlice = createSlice({
         state.isLoadingOrder = false;
         state.orderModalData = action.payload.order;
       })
-      .addCase(fetchOrderBurger.rejected, (state, action) => {
+      .addCase(fetchOrderBurger.rejected, (state) => {
         state.isLoadingOrder = false;
       })
-      //
-      //
+
       .addCase(fetchOrders.pending, (state) => {
-        // state.isLoadingOrder = true;
+        state.isLoadingOrder = true;
       })
       .addCase(fetchOrders.fulfilled, (state, action) => {
-        // state.isLoadingOrder = false;
+        state.isLoadingOrder = false;
         state.userOrders = action.payload;
       })
-      .addCase(fetchOrders.rejected, (state, action) => {
-        // state.isLoadingOrder = false;
+      .addCase(fetchOrders.rejected, (state) => {
+        state.isLoadingOrder = false;
       })
-      //
-      //
+
       .addCase(fetchOrderByNumber.pending, (state) => {
-        // state.isLoadingOrder = true;
+        state.orderByNumer = null;
       })
       .addCase(fetchOrderByNumber.fulfilled, (state, action) => {
         state.orderByNumer = action.payload.orders[0];
       })
-      .addCase(fetchOrderByNumber.rejected, (state, action) => {
-        // state.isLoadingOrder = false;
+      .addCase(fetchOrderByNumber.rejected, (state) => {
+        state.orderByNumer = null;
       });
   }
 });
@@ -132,11 +130,9 @@ export const {
   getStateUserOrders,
   getStateisLoadingOrder,
   getStateOrderModalData,
-  getStateOrderByNumer
+  getStateOrderByNumer,
+  getStateIsLoadingFeeds
 } = feedSlice.selectors;
-
-// // export const getIngredients: (state: RootState) => state.
-// // export const selectCount = (state: RootState) => state.burgerSlice.data;
 
 export const { resetOrderModalData, resetOrderisLoadingOrder } =
   feedSlice.actions;

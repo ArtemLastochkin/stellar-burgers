@@ -2,7 +2,6 @@ import { ProfileUI } from '@ui-pages';
 import { FC, SyntheticEvent, useEffect, useState } from 'react';
 import { useAppDispatch, useAppSelector } from '../../services/store';
 import {
-  fetchRegisterUserApi,
   fetchUpdateUserApi,
   getStateEmail,
   getStateName

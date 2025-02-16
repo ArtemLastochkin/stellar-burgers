@@ -3,17 +3,8 @@ import { useInView } from 'react-intersection-observer';
 
 import { TTabMode, TypeIngredient } from '@utils-types';
 import { BurgerIngredientsUI } from '../ui/burger-ingredients';
-import {
-  RootState,
-  useAppDispatch,
-  useAppSelector
-} from '../../services/store';
-import {
-  // getIngredientsTypeBun,
-  // getIngredientsTypeMains,
-  // getIngredientsTypeSauce
-  getIngredients
-} from '../../services/burgerConstructorSlice';
+import { useAppSelector } from '../../services/store';
+import { getIngredients } from '../../services/burgerConstructorSlice';
 
 export const BurgerIngredients: FC = () => {
   /** TODO: взять переменные из стора */
