@@ -1,13 +1,8 @@
-import { FC, useEffect, useMemo } from 'react';
-import { TConstructorIngredient, TypeIngredient } from '@utils-types';
+import { FC, useMemo } from 'react';
+import { TConstructorIngredient } from '@utils-types';
 import { BurgerConstructorUI } from '@ui';
 import { useAppDispatch, useAppSelector } from '../../services/store';
-import {
-  getConstructorItems,
-  getIngredients,
-  setConstructorItemsBun,
-  TConstructorItems
-} from '../../services/burgerConstructorSlice';
+import { getConstructorItems } from '../../services/burgerConstructorSlice';
 import {
   fetchOrderBurger,
   getStateisLoadingOrder,
@@ -20,53 +15,29 @@ import { useNavigate } from 'react-router-dom';
 
 export const BurgerConstructor: FC = () => {
   /** TODO: взять переменные constructorItems, orderRequest и orderModalData из стора */
-  const initialConstructorItems = useAppSelector(getConstructorItems);
-  const ingredients = useAppSelector(getIngredients);
+  const constructorItems = useAppSelector(getConstructorItems);
   const orderRequest = useAppSelector(getStateisLoadingOrder);
   const orderModalData = useAppSelector(getStateOrderModalData);
   const stateIsUserLogined = useAppSelector(getStateIsUserLogined);
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
 
-  useEffect(() => {
-    const bunInitial = ingredients.find((e) => e.type === TypeIngredient.BUN);
-    if (bunInitial) {
-      const bunPrice = bunInitial.price;
-      const bunName = bunInitial.name;
-      const bunImage = bunInitial.image;
-      const bunId = bunInitial._id;
-      const newInitialConstructorItems: Pick<
-        TConstructorItems,
-        TypeIngredient.BUN
-      > = {
-        bun: { price: bunPrice, name: bunName, image: bunImage, _id: bunId }
-      };
-      dispatch(setConstructorItemsBun(newInitialConstructorItems));
-    }
-  }, [ingredients]);
-
-  const constructorItems: TConstructorItems = {
-    bun: {
-      price: initialConstructorItems.bun.price,
-      name: initialConstructorItems.bun.name,
-      image: initialConstructorItems.bun.image,
-      _id: initialConstructorItems.bun._id
-    },
-    ingredients: initialConstructorItems.ingredients
-  };
-
   const onOrderClick = () => {
+    if (!stateIsUserLogined) {
+      return navigate('/login');
+    }
+
     if (!constructorItems.bun || orderRequest) {
       return;
-    } else {
-      const dataRequest = initialConstructorItems.ingredients.map((e) => e._id);
-      for (let i = 0; i < 2; i += 1) {
-        dataRequest.push(initialConstructorItems.bun._id);
-      }
-      stateIsUserLogined
-        ? dispatch(fetchOrderBurger([...dataRequest]))
-        : navigate('/login');
     }
+
+    const dataRequest = constructorItems.ingredients.map((e) => e._id);
+
+    for (let i = 0; i < 2; i += 1) {
+      dataRequest.push(constructorItems.bun._id);
+    }
+
+    dispatch(fetchOrderBurger([...dataRequest]));
   };
 
   const closeOrderModal = () => {

@@ -27,6 +27,8 @@ export const fetchRegisterUserApi = createAsyncThunk(
   'userSlice/fetchRegisterUserApi',
   async (data: TRegisterData) => {
     const response = await registerUserApi(data);
+    setCookie('accessToken', response.accessToken);
+    localStorage.setItem('refreshToken', response.refreshToken);
     return response;
   }
 );
@@ -35,6 +37,10 @@ export const fetchLoginUserApi = createAsyncThunk(
   'userSlice/fetchLoginUserApi',
   async (data: TLoginData) => {
     const response = await loginUserApi(data);
+    if (response.accessToken && response.refreshToken) {
+      setCookie('accessToken', response.accessToken);
+      localStorage.setItem('refreshToken', response.refreshToken);
+    }
     return response;
   }
 );
@@ -59,6 +65,10 @@ export const fetchlogoutApi = createAsyncThunk(
   'userSlice/fetchlogoutApi',
   async () => {
     const response = await logoutApi();
+    if (response) {
+      setCookie('accessToken', '');
+      localStorage.removeItem('refreshToken');
+    }
     return response;
   }
 );
@@ -86,8 +96,6 @@ export const userSlice = createSlice({
         state.isUserLogined = action.payload.success;
         state.email = action.payload.user.email;
         state.name = action.payload.user.name;
-        setCookie('accessToken', action.payload.accessToken);
-        localStorage.setItem('refreshToken', action.payload.refreshToken);
       })
       .addCase(fetchRegisterUserApi.rejected, (state, action) => {
         state.errorMessage = String(action.error.message);
@@ -105,8 +113,6 @@ export const userSlice = createSlice({
         state.isLoading = false;
         state.email = action.payload.user.email;
         state.name = action.payload.user.name;
-        setCookie('accessToken', action.payload.accessToken);
-        localStorage.setItem('refreshToken', action.payload.refreshToken);
       })
       .addCase(fetchLoginUserApi.rejected, (state, action) => {
         state.errorMessage = String(action.error.message);
@@ -150,8 +156,6 @@ export const userSlice = createSlice({
         state.isUserLogined = !action.payload.success;
         state.email = '';
         state.name = '';
-        setCookie('accessToken', '');
-        localStorage.removeItem('refreshToken');
       })
       .addCase(fetchlogoutApi.rejected, (state) => {
         state.isLoading = false;

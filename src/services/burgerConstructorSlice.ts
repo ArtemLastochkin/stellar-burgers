@@ -5,6 +5,7 @@ import {
   TIngredient,
   TypeIngredient
 } from '@utils-types';
+import { fetchOrderBurger } from './feedSlice';
 
 export type TConstructorItems = {
   bun: {
@@ -89,9 +90,13 @@ export const burgerConstructorSlice = createSlice({
         state.errorMessage = null;
         state.ingredients = action.payload;
       })
-      .addCase(fetchIngredients.rejected, (state, action) => {
+      .addCase(fetchIngredients.rejected, (state) => {
         state.isLoading = false;
         state.errorMessage = 'Нет данных об ингридиетах';
+      })
+
+      .addCase(fetchOrderBurger.fulfilled, (state) => {
+        state.constructorItems.ingredients = [];
       });
   }
 });
