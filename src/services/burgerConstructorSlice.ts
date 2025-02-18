@@ -96,7 +96,15 @@ export const burgerConstructorSlice = createSlice({
       })
 
       .addCase(fetchOrderBurger.fulfilled, (state) => {
-        state.constructorItems.ingredients = [];
+        state.constructorItems = {
+          bun: {
+            price: 0,
+            name: '',
+            image: '',
+            _id: ''
+          },
+          ingredients: []
+        };
       });
   }
 });
