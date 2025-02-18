@@ -24,6 +24,10 @@
   color: var(--text-primary-color);
 }
 
+a {
+  text-decoration: none;
+}
+
 .link_position_last {
   display: flex;
   justify-content: flex-end;

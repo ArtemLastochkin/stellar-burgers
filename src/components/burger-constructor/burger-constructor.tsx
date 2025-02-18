@@ -1,24 +1,49 @@
 import { FC, useMemo } from 'react';
 import { TConstructorIngredient } from '@utils-types';
 import { BurgerConstructorUI } from '@ui';
+import { useAppDispatch, useAppSelector } from '../../services/store';
+import { getConstructorItems } from '../../services/burgerConstructorSlice';
+import {
+  fetchOrderBurger,
+  getStateisLoadingOrder,
+  getStateOrderModalData,
+  resetOrderisLoadingOrder,
+  resetOrderModalData
+} from '../../services/feedSlice';
+import { getStateIsUserLogined } from '../../services/userSlice';
+import { useNavigate } from 'react-router-dom';
 
 export const BurgerConstructor: FC = () => {
   /** TODO: взять переменные constructorItems, orderRequest и orderModalData из стора */
-  const constructorItems = {
-    bun: {
-      price: 0
-    },
-    ingredients: []
-  };
-
-  const orderRequest = false;
-
-  const orderModalData = null;
+  const constructorItems = useAppSelector(getConstructorItems);
+  const orderRequest = useAppSelector(getStateisLoadingOrder);
+  const orderModalData = useAppSelector(getStateOrderModalData);
+  const stateIsUserLogined = useAppSelector(getStateIsUserLogined);
+  const dispatch = useAppDispatch();
+  const navigate = useNavigate();
 
   const onOrderClick = () => {
-    if (!constructorItems.bun || orderRequest) return;
+    if (!stateIsUserLogined) {
+      return navigate('/login');
+    }
+
+    if (!constructorItems.bun || orderRequest) {
+      return;
+    }
+
+    const dataRequest = constructorItems.ingredients.map((e) => e._id);
+
+    for (let i = 0; i < 2; i += 1) {
+      dataRequest.push(constructorItems.bun._id);
+    }
+
+    dispatch(fetchOrderBurger([...dataRequest]));
   };
-  const closeOrderModal = () => {};
+
+  const closeOrderModal = () => {
+    dispatch(resetOrderisLoadingOrder());
+    dispatch(resetOrderModalData());
+  };
 
   const price = useMemo(
     () =>
@@ -29,8 +54,6 @@ export const BurgerConstructor: FC = () => {
       ),
     [constructorItems]
   );
-
-  return null;
 
   return (
     <BurgerConstructorUI
