@@ -3,11 +3,11 @@ import {
   getOrderByNumberApi,
   getOrdersApi,
   orderBurgerApi
-} from '@api';
+} from '../utils/burger-api';
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 import { TOrder, TOrdersData } from '@utils-types';
 
-const initialState: TOrdersData & {
+export const initialState: TOrdersData & {
   isLoadingOrder: boolean;
   userOrders: TOrder[];
   orderModalData: TOrder | null;

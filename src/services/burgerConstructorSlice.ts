@@ -1,4 +1,4 @@
-import { getIngredientsApi } from '@api';
+import { getIngredientsApi } from '../utils/burger-api';
 import { createAsyncThunk, createSlice, PayloadAction } from '@reduxjs/toolkit';
 import {
   TConstructorIngredient,
@@ -24,7 +24,7 @@ export interface IburgerConstructorState {
   errorMessage: string | null;
 }
 
-const initialState: IburgerConstructorState = {
+export const initialState: IburgerConstructorState = {
   ingredients: [],
   constructorItems: {
     bun: {
