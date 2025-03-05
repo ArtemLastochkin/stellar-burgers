@@ -5,8 +5,7 @@ import { useAppSelector, useAppDispatch } from '../../services/store';
 import {
   createNewObjectConstructorItemsIngredients,
   getConstructorItems,
-  setConstructorItemsIngredients,
-  TConstructorItems
+  setConstructorItemsIngredients
 } from '../../services/burgerConstructorSlice';
 
 export const BurgerConstructorElement: FC<BurgerConstructorElementProps> = memo(
