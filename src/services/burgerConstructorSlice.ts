@@ -47,16 +47,6 @@ export const fetchIngredients = createAsyncThunk(
   }
 );
 
-export const createNewObjectConstructorItemsIngredients = (
-  newIngredients: TConstructorIngredient[]
-): { ingredients: TConstructorIngredient[] } => {
-  const newInitialConstructorItemsIngredients: Pick<
-    TConstructorItems,
-    'ingredients'
-  > = { ingredients: newIngredients };
-  return newInitialConstructorItemsIngredients;
-};
-
 export const burgerConstructorSlice = createSlice({
   name: 'burgerSlice',
   initialState,
@@ -72,6 +62,22 @@ export const burgerConstructorSlice = createSlice({
       action: PayloadAction<Pick<TConstructorItems, 'ingredients'>>
     ) => {
       state.constructorItems.ingredients = action.payload.ingredients;
+    },
+    setConstructorItemsIngredient: (
+      state,
+      action: PayloadAction<{
+        index: number;
+        ingredient: TConstructorIngredient;
+      }>
+    ) => {
+      state.constructorItems.ingredients.splice(
+        action.payload.index,
+        0,
+        action.payload.ingredient
+      );
+    },
+    delConstructorItemsIngredient: (state, action: PayloadAction<number>) => {
+      state.constructorItems.ingredients.splice(action.payload, 1);
     }
   },
   selectors: {
@@ -115,6 +121,10 @@ export const {
   getStateIsLoadingIngredients
 } = burgerConstructorSlice.selectors;
 
-export const { setConstructorItemsBun, setConstructorItemsIngredients } =
-  burgerConstructorSlice.actions;
+export const {
+  setConstructorItemsBun,
+  setConstructorItemsIngredients,
+  delConstructorItemsIngredient,
+  setConstructorItemsIngredient
+} = burgerConstructorSlice.actions;
 export default burgerConstructorSlice.reducer;

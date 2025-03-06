@@ -7,7 +7,8 @@ import burgerConstructorSlice, {
   getIngredients,
   getConstructorItems,
   getStateIsLoadingIngredients,
-  createNewObjectConstructorItemsIngredients
+  setConstructorItemsIngredient,
+  delConstructorItemsIngredient
 } from '../../src/services/burgerConstructorSlice';
 import '../../src/services/store';
 import {
@@ -18,7 +19,7 @@ import {
   Tuple,
   UnknownAction
 } from '@reduxjs/toolkit';
-import { TypeIngredient } from '../../src/utils/types';
+import { TConstructorIngredient, TypeIngredient } from '../../src/utils/types';
 import ingredientsMock from './burgerIngredients.json';
 import { fetchOrderBurger } from '../../src/services/feedSlice';
 
@@ -38,7 +39,7 @@ describe('[burgerConstructorSlice]', () => {
     errorMessage: ''
   };
 
-  let newState: IburgerConstructorState | undefined;
+  let newState: IburgerConstructorState;
 
   const createMockStore = (state: IburgerConstructorState) =>
     configureStore({
@@ -117,6 +118,44 @@ describe('[burgerConstructorSlice]', () => {
         isLoading: false,
         errorMessage: ''
       });
+    });
+
+    test('setConstructorItemsIngredient', () => {
+      const setConstructorItemsIngredientMock = jest.fn(
+        (arg: { index: number; ingredient: TConstructorIngredient }) =>
+          setConstructorItemsIngredient(arg)
+      );
+
+      ingredientsMock.ingredientsData.ingredients.forEach((e, i) => {
+        burgerConstructorSlice(
+          newState,
+          setConstructorItemsIngredientMock({ index: i, ingredient: e })
+        );
+        return newState;
+      });
+
+      expect(setConstructorItemsIngredientMock).toHaveBeenCalled();
+      expect(setConstructorItemsIngredientMock).toHaveBeenCalledTimes(3);
+      expect(newState.constructorItems.ingredients).toEqual([
+        ...ingredientsMock.ingredientsData.ingredients
+      ]);
+    });
+
+    test('delConstructorItemsIngredient', () => {
+      const delConstructorItemsIngredientMock = jest.fn((arg: number) =>
+        delConstructorItemsIngredient(arg)
+      );
+
+      newState = burgerConstructorSlice(
+        newState,
+        delConstructorItemsIngredientMock(0)
+      );
+
+      expect(delConstructorItemsIngredientMock).toHaveBeenCalled();
+      expect(delConstructorItemsIngredientMock).toHaveBeenCalledTimes(1);
+      expect(newState.constructorItems.ingredients[0]).toEqual(
+        ingredientsMock.ingredientsData.ingredients[1]
+      );
     });
   });
 
@@ -265,17 +304,5 @@ describe('[burgerConstructorSlice]', () => {
         store.getState().isLoading
       );
     });
-  });
-
-  // ******************************************* Вспомогательные функции в burgerConstructorSlice *******************************************
-
-  describe('[utils]', () => {
-    const fn = jest.fn((arg) =>
-      createNewObjectConstructorItemsIngredients(arg)
-    );
-    const resault = fn(ingredients);
-    expect(fn).toHaveBeenCalled();
-    expect(fn).toHaveBeenCalledTimes(1);
-    expect(resault).toEqual({ ingredients: ingredients });
   });
 });

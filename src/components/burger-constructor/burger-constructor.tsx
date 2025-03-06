@@ -27,7 +27,7 @@ export const BurgerConstructor: FC = () => {
       return navigate('/login');
     }
 
-    if (!constructorItems.bun || orderRequest) {
+    if (!constructorItems.bun._id || orderRequest) {
       return;
     }
 

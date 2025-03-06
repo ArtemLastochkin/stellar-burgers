@@ -5,7 +5,6 @@ import { BurgerIngredientUI } from '@ui';
 import { TBurgerIngredientProps } from './type';
 import { useAppDispatch, useAppSelector } from '../../services/store';
 import {
-  createNewObjectConstructorItemsIngredients,
   getConstructorItems,
   setConstructorItemsBun,
   setConstructorItemsIngredients
@@ -56,9 +55,7 @@ export const BurgerIngredient: FC<TBurgerIngredientProps> = memo(
         const newIngredients = [...ingredients.ingredients, newIngredient];
 
         dispatch(
-          setConstructorItemsIngredients(
-            createNewObjectConstructorItemsIngredients(newIngredients)
-          )
+          setConstructorItemsIngredients({ ingredients: newIngredients })
         );
       }
     };
