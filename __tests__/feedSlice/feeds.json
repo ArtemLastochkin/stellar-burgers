@@ -1,0 +1,153 @@
+{
+  "feedsDataMock": {
+    "initialStateMock": {
+      "orders": [],
+      "orderByNumer": null,
+      "orderModalData": null,
+      "userOrders": [],
+      "total": 0,
+      "totalToday": 0,
+      "isLoadingOrder": false,
+      "isLoadingFeeds": false
+    },
+    "notInitialStateMock": {
+      "orders": [
+        {
+          "_id": "mockId1",
+          "status": "success",
+          "name": "nameOrder1",
+          "createdAt": "01/03/2025",
+          "updatedAt": "01/03/2025",
+          "number": 1,
+          "ingredients": ["ingredient1", "ingredient2", "ingredient3"]
+        },
+        {
+          "_id": "mockId2",
+          "status": "fail",
+          "name": "nameOrder2",
+          "createdAt": "02/03/2025",
+          "updatedAt": "02/03/2025",
+          "number": 2,
+          "ingredients": ["ingredient4", "ingredient5", "ingredient6"]
+        },
+        {
+          "_id": "mockId3",
+          "status": "fail",
+          "name": "nameOrder3",
+          "createdAt": "02/03/2025",
+          "updatedAt": "02/03/2025",
+          "number": 3,
+          "ingredients": ["ingredient7", "ingredient8", "ingredient9"]
+        }
+      ],
+      "orderByNumer": {
+        "_id": "mockId3",
+        "status": "fail",
+        "name": "nameOrder3",
+        "createdAt": "02/03/2025",
+        "updatedAt": "02/03/2025",
+        "number": 3,
+        "ingredients": ["ingredient7", "ingredient8", "ingredient9"]
+      },
+      "orderModalData": {
+        "_id": "mockId",
+        "status": "success",
+        "name": "nameOrder",
+        "createdAt": "01/03/2025",
+        "updatedAt": "01/03/2025",
+        "number": 1,
+        "ingredients": ["ingredient1", "ingredient2", "ingredient3"]
+      },
+      "userOrders": [
+        {
+          "_id": "mockId1",
+          "status": "success",
+          "name": "nameOrder1",
+          "createdAt": "01/03/2025",
+          "updatedAt": "01/03/2025",
+          "number": 1,
+          "ingredients": ["ingredient1", "ingredient2", "ingredient3"]
+        },
+        {
+          "_id": "mockId2",
+          "status": "fail",
+          "name": "nameOrder2",
+          "createdAt": "02/03/2025",
+          "updatedAt": "02/03/2025",
+          "number": 2,
+          "ingredients": ["ingredient4", "ingredient5", "ingredient6"]
+        },
+        {
+          "_id": "mockId3",
+          "status": "fail",
+          "name": "nameOrder3",
+          "createdAt": "02/03/2025",
+          "updatedAt": "02/03/2025",
+          "number": 3,
+          "ingredients": ["ingredient7", "ingredient8", "ingredient9"]
+        }
+      ],
+      "total": 465,
+      "totalToday": 3,
+      "isLoadingOrder": false,
+      "isLoadingFeeds": false
+    },
+    "OrderMock": {
+      "_id": "mockId",
+      "status": "success",
+      "name": "nameOrder",
+      "createdAt": "01/03/2025",
+      "updatedAt": "01/03/2025",
+      "number": 1,
+      "ingredients": ["ingredient1", "ingredient2", "ingredient3"]
+    },
+    "feedsResponseMock": {
+      "orders": [
+        {
+          "_id": "mockId1",
+          "status": "success",
+          "name": "nameOrder1",
+          "createdAt": "01/03/2025",
+          "updatedAt": "01/03/2025",
+          "number": 1,
+          "ingredients": ["ingredient1", "ingredient2", "ingredient3"]
+        },
+        {
+          "_id": "mockId2",
+          "status": "fail",
+          "name": "nameOrder2",
+          "createdAt": "02/03/2025",
+          "updatedAt": "02/03/2025",
+          "number": 2,
+          "ingredients": ["ingredient4", "ingredient5", "ingredient6"]
+        },
+        {
+          "_id": "mockId3",
+          "status": "fail",
+          "name": "nameOrder3",
+          "createdAt": "02/03/2025",
+          "updatedAt": "02/03/2025",
+          "number": 3,
+          "ingredients": ["ingredient7", "ingredient8", "ingredient9"]
+        }
+      ],
+      "total": 3,
+      "totalToday": 1,
+      "success": true
+    },
+    "arrOrdersMock": ["nameOrder1", "nameOrder2", "nameOrder3"],
+    "newOrderResponseMock": {
+      "order": {
+        "_id": "mockId",
+        "status": "success",
+        "name": "nameOrder",
+        "createdAt": "01/03/2025",
+        "updatedAt": "01/03/2025",
+        "number": 1,
+        "ingredients": ["ingredient1", "ingredient2", "ingredient3"]
+      },
+      "name": "newOrderResponseMock",
+      "success": true
+    }
+  }
+}

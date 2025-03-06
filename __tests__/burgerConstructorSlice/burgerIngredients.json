@@ -1,0 +1,108 @@
+{
+  "ingredientsData": {
+    "bun": {
+      "price": 1,
+      "name": "bunMock",
+      "image": "image",
+      "_id": "id1"
+    },
+    "ingredients": [
+      {
+        "_id": "id1",
+        "name": "MockNameIngredient1",
+        "type": "bun",
+        "proteins": 1,
+        "fat": 2,
+        "carbohydrates": 3,
+        "calories": 4,
+        "price": 5,
+        "image": "urlImage1",
+        "image_large": "urlImageLarge1",
+        "image_mobile": "urlIamgeMobile1",
+        "id": "id1"
+      },
+      {
+        "_id": "id2",
+        "name": "MockNameIngredient2",
+        "type": "sauce",
+        "proteins": 2,
+        "fat": 3,
+        "carbohydrates": 4,
+        "calories": 5,
+        "price": 6,
+        "image": "urlImage2",
+        "image_large": "urlImageLarge2",
+        "image_mobile": "urlIamgeMobile2",
+        "id": "id2"
+      },
+      {
+        "_id": "id3",
+        "name": "MockNameIngredient3",
+        "type": "main",
+        "proteins": 3,
+        "fat": 4,
+        "carbohydrates": 5,
+        "calories": 6,
+        "price": 7,
+        "image": "urlImage3",
+        "image_large": "urlImageLarge3",
+        "image_mobile": "urlIamgeMobile3",
+        "id": "id3"
+      }
+    ],
+    "ingredientsWithoutId": [
+      {
+        "_id": "id1",
+        "name": "MockNameIngredient1",
+        "type": "bun",
+        "proteins": 1,
+        "fat": 2,
+        "carbohydrates": 3,
+        "calories": 4,
+        "price": 5,
+        "image": "urlImage1",
+        "image_large": "urlImageLarge1",
+        "image_mobile": "urlIamgeMobile1"
+      },
+      {
+        "_id": "id2",
+        "name": "MockNameIngredient2",
+        "type": "sauce",
+        "proteins": 2,
+        "fat": 3,
+        "carbohydrates": 4,
+        "calories": 5,
+        "price": 6,
+        "image": "urlImage2",
+        "image_large": "urlImageLarge2",
+        "image_mobile": "urlIamgeMobile2"
+      },
+      {
+        "_id": "id3",
+        "name": "MockNameIngredient3",
+        "type": "main",
+        "proteins": 3,
+        "fat": 4,
+        "carbohydrates": 5,
+        "calories": 6,
+        "price": 7,
+        "image": "urlImage3",
+        "image_large": "urlImageLarge3",
+        "image_mobile": "urlIamgeMobile3"
+      }
+    ],
+    "TNewOrderResponse": {
+      "success": true,
+      "order": {
+        "_id": "1",
+        "status": "ok",
+        "name": "TNewOrderResponseFulfilled",
+        "createdAt": "01/03/2025",
+        "updatedAt": "01/03/2025",
+        "number": 1,
+        "ingredients": ["ingredient1", "ingredient2", "ingredient3"]
+      },
+      "name": "TNewOrderResponseFulfilled"
+    }
+  }
+}

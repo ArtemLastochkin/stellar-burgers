@@ -1,0 +1,43 @@
+{
+  "userDataMock": {
+    "initialStateMock": {
+      "email": "",
+      "name": "",
+      "errorMessage": "",
+      "isUserLogined": false,
+      "isLoading": true
+    },
+    "notInitialStateMock": {
+      "email": "yandex.practicum.slojno.ru",
+      "name": "UserName",
+      "errorMessage": "Fail",
+      "isUserLogined": true,
+      "isLoading": false
+    },
+    "registerDataMock": {
+      "email": "yandex.practicum.slojno.ru",
+      "name": "UserName",
+      "password": "password"
+    },
+    "authResponseMock": {
+      "refreshToken": "1234567890asdfghjkl;'",
+      "accessToken": "0987654321poiuytrewq",
+      "user": {
+        "email": "yandex.practicum.slojno.ru",
+        "name": "UserName"
+      },
+      "success": true
+    },
+    "loginDataMock": {
+      "email": "yandex.practicum.slojno.ru",
+      "password": "password"
+    },
+    "userResponseMock": {
+      "success": true,
+      "user": {
+        "email": "yandex.practicum.slojno.ru",
+        "name": "UserName"
+      }
+    }
+  }
+}

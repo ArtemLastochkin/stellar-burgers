@@ -1,0 +1,130 @@
+import { getIngredientsApi } from '../utils/burger-api';
+import { createAsyncThunk, createSlice, PayloadAction } from '@reduxjs/toolkit';
+import {
+  TConstructorIngredient,
+  TIngredient,
+  TypeIngredient
+} from '@utils-types';
+import { fetchOrderBurger } from './feedSlice';
+
+export type TConstructorItems = {
+  bun: {
+    price: number;
+    name: string;
+    image: string;
+    _id: string;
+  };
+  ingredients: TConstructorIngredient[];
+};
+
+export interface IburgerConstructorState {
+  ingredients: TIngredient[];
+  constructorItems: TConstructorItems;
+  isLoading: boolean;
+  errorMessage: string | null;
+}
+
+export const initialState: IburgerConstructorState = {
+  ingredients: [],
+  constructorItems: {
+    bun: {
+      price: 0,
+      name: '',
+      image: '',
+      _id: ''
+    },
+    ingredients: []
+  },
+  isLoading: false,
+  errorMessage: ''
+};
+
+export const fetchIngredients = createAsyncThunk(
+  'burgerSlice/fetchIngredients',
+  async () => {
+    const response = await getIngredientsApi();
+    return response;
+  }
+);
+
+export const burgerConstructorSlice = createSlice({
+  name: 'burgerSlice',
+  initialState,
+  reducers: {
+    setConstructorItemsBun: (
+      state,
+      action: PayloadAction<Pick<TConstructorItems, TypeIngredient.BUN>>
+    ) => {
+      state.constructorItems.bun = action.payload.bun!;
+    },
+    setConstructorItemsIngredients: (
+      state,
+      action: PayloadAction<Pick<TConstructorItems, 'ingredients'>>
+    ) => {
+      state.constructorItems.ingredients = action.payload.ingredients;
+    },
+    setConstructorItemsIngredient: (
+      state,
+      action: PayloadAction<{
+        index: number;
+        ingredient: TConstructorIngredient;
+      }>
+    ) => {
+      state.constructorItems.ingredients.splice(
+        action.payload.index,
+        0,
+        action.payload.ingredient
+      );
+    },
+    delConstructorItemsIngredient: (state, action: PayloadAction<number>) => {
+      state.constructorItems.ingredients.splice(action.payload, 1);
+    }
+  },
+  selectors: {
+    getIngredients: (state) => state.ingredients,
+    getConstructorItems: (state) => state.constructorItems,
+    getStateIsLoadingIngredients: (state) => state.isLoading
+  },
+  extraReducers: (builder) => {
+    builder
+      .addCase(fetchIngredients.pending, (state) => {
+        state.isLoading = true;
+        state.errorMessage = null;
+      })
+      .addCase(fetchIngredients.fulfilled, (state, action) => {
+        state.isLoading = false;
+        state.errorMessage = null;
+        state.ingredients = action.payload;
+      })
+      .addCase(fetchIngredients.rejected, (state) => {
+        state.isLoading = false;
+        state.errorMessage = 'Нет данных об ингридиетах';
+      })
+
+      .addCase(fetchOrderBurger.fulfilled, (state) => {
+        state.constructorItems = {
+          bun: {
+            price: 0,
+            name: '',
+            image: '',
+            _id: ''
+          },
+          ingredients: []
+        };
+      });
+  }
+});
+
+export const {
+  getIngredients,
+  getConstructorItems,
+  getStateIsLoadingIngredients
+} = burgerConstructorSlice.selectors;
+
+export const {
+  setConstructorItemsBun,
+  setConstructorItemsIngredients,
+  delConstructorItemsIngredient,
+  setConstructorItemsIngredient
+} = burgerConstructorSlice.actions;
+export default burgerConstructorSlice.reducer;
